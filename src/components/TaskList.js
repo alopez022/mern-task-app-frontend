@@ -4,6 +4,7 @@ import TaskForm from "./TaskForm";
 import { toast } from "react-toastify";
 import axios from "axios";
 import loadingImg from "../assets/loader.gif";
+import { URL } from "../App";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -26,7 +27,7 @@ const TaskList = () => {
   const getTasks  = async () => {
     setIsLoading(true);
     try {
-      const {data} = await axios.get("/api/tasks");
+      const {data} = await axios.get(`${URL}/api/tasks`);
       setTasks(data);
       setIsLoading(false);
     } catch(error) {
@@ -46,7 +47,7 @@ const TaskList = () => {
     }
 
     try {
-      await axios.post("/api/tasks", formData);
+      await axios.post(`${URL}/api/tasks`, formData);
       toast.success("Task added successfully");
       setFormData({...formData, name: ""})
     } catch(error) {
@@ -56,7 +57,7 @@ const TaskList = () => {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`/api/tasks/${id}`);
+      await axios.delete(`${URL}/api/tasks/${id}`);
       getTasks();
     } catch(error) {
       toast.error(error.message);
@@ -85,7 +86,7 @@ const TaskList = () => {
       return toast.error("Input field cannot be empty");
     }
     try {
-      await axios.put(`/api/tasks/${taskId}`, formData);
+      await axios.put(`${URL}/api/tasks/${taskId}`, formData);
       setFormData({...formData, name: ""});
       setIsEditing(false);
       getTasks();
@@ -100,7 +101,7 @@ const TaskList = () => {
       completed: true
     };
     try {
-      await axios.put(`/api/tasks/${task._id}`, newFormData);
+      await axios.put(`${URL}/api/tasks/${task._id}`, newFormData);
       getTasks();
     } catch(error) {
       toast.error(error.message);
